@@ -8,7 +8,7 @@ public class FileStorageConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/uploads/**")
+        registry.addResourceHandler("/uploads/**")  // Permet d'accéder aux fichiers uploadés via URL
                 .addResourceLocations("file:uploads/");
     }
 }

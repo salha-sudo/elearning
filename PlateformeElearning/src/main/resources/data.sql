@@ -1,8 +1,8 @@
 -- UTILISATEURS
 INSERT INTO utilisateur (id, username, password, role) VALUES
-(1, 'admin', '{noop}123', 'ROLE_ADMIN'), -- mot de passe non encodé (Spring Security)
-(2, 'formateur1', '{noop}123', 'ROLE_FORMATEUR'),
-(3, 'apprenant1', '{noop}123', 'ROLE_APPRENANT');
+(1, 'admin', '$2a$10$Dow1sF9G7H0Kj8k', 'ROLE_ADMIN'), -- mot de passe non encodé (Spring Security)
+(2, 'formateur1', '$2a$10$Dow1sF9G7H0Kj8kJ1l', 'ROLE_FORMATEUR'),
+(3, 'apprenant1', '$2a$10$Dow1sF9G7H0Kj8kJ1lY', 'ROLE_APPRENANT');
 
 -- COURS
 INSERT INTO cours (id, titre, description, categorie, niveau, image_url, actif, date_creation, formateur_id)
