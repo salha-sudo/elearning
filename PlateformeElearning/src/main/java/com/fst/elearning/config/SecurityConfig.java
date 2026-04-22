@@ -14,25 +14,39 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            // Désactiver CSRF (utile pour tests / API)
+            //  CSRF désactivé 
             .csrf(csrf -> csrf.disable())
 
-            // Autorisations
+            //  AUTORISATIONS
             .authorizeHttpRequests(auth -> auth
+
+                // pages publiques
+                .requestMatchers(
+                        "/login",
+                        "/css/**",
+                        "/js/**",
+                        "/images/**"
+                ).permitAll()
+
+                // rôles
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/formateur/**").hasRole("FORMATEUR")
                 .requestMatchers("/apprenant/**").hasRole("APPRENANT")
-                .anyRequest().permitAll()
+
+                // tout le reste nécessite login
+                .anyRequest().authenticated()
             )
 
-            // Login personnalisé
+            //  LOGIN THYMELEAF
             .formLogin(login -> login
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/web/cours", true)
+                .failureUrl("/login?error")
                 .permitAll()
             )
 
-            // Logout propre
+            // LOGOUT
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
@@ -41,7 +55,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // BCrypt encoder
+    // PASSWORD ENCODER
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

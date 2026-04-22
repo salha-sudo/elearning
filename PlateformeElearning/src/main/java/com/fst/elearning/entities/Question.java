@@ -19,9 +19,13 @@ public class Question {
 
     private String titre;
 
-    @ManyToOne   // Plusieurs questions appartiennent à un quiz
-    private Module module;
+    private String choix1;
+    private String choix2;
+    private String choix3;
+    private String choix4;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
-    private List<Question> questions;
+    private int bonneReponse; 
+
+    @ManyToOne
+    private Quiz quiz;
 }

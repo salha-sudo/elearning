@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Leçons</title>
+</head>
+
+<body class="container mt-4">
+
+<h2> Leçons</h2>
+
+<div th:each="l : ${lecons}" class="card p-2 mb-2">
+    <h5 th:text="${l.titre}"></h5>
+    <p th:text="${l.contenu}"></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Créer cours</title>
+</head>
+
+<body class="container mt-4">
+
+<h2>Ajouter un cours</h2>
+
+<form th:action="@{/formateur/cours}" method="post">
+
+    <input type="text" name="titre" class="form-control mb-2" placeholder="Titre">
+
+    <textarea name="description" class="form-control mb-2"></textarea>
+
+    <select name="niveau" class="form-control mb-2">
+        <option>DEBUTANT</option>
+        <option>INTERMEDIAIRE</option>
+        <option>AVANCE</option>
+    </select>
+
+    <button class="btn btn-success">Enregistrer</button>
+
+</form>
+
+</body>
+</html>

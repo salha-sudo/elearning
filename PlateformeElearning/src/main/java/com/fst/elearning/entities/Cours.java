@@ -40,5 +40,12 @@ public class Cours {
 
     private LocalDateTime dateCreation = LocalDateTime.now();
 
+	public void setId(Long id2) {
+		
+		
+	}
+	@OneToMany(mappedBy = "cours", cascade = CascadeType.ALL)
+	private List<Module> modules;
+
    
 }
