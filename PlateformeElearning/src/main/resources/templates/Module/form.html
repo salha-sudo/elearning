@@ -1,0 +1,9 @@
+<form th:action="@{/formateur/modules}" method="post">
+
+    <input type="text" name="titre" class="form-control mb-2" placeholder="Titre module">
+
+    <input type="hidden" name="cours.id" th:value="${coursId}">
+
+    <button class="btn btn-primary">Créer module</button>
+
+</form>

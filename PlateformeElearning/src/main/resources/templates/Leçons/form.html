@@ -1,0 +1,11 @@
+<form th:action="@{/formateur/lecons}" method="post">
+
+    <input type="text" name="titre" class="form-control mb-2" placeholder="Titre">
+
+    <textarea name="contenu" class="form-control mb-2"></textarea>
+
+    <input type="hidden" name="module.id" th:value="${moduleId}">
+
+    <button class="btn btn-success">Ajouter leçon</button>
+
+</form>

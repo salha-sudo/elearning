@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modules</title>
+</head>
+
+<body class="container mt-4">
+
+<h2>Modules du cours</h2>
+
+<div th:each="m : ${modules}" class="card p-2 mb-2">
+    <h5 th:text="${m.titre}"></h5>
+
+    <!-- 🔗 voir leçons -->
+    <a th:href="@{'/web/lecons/module/' + ${m.id}}" class="btn btn-sm btn-primary">
+        Voir leçons
+    </a>
+</div>
+
+</body>
+</html>
