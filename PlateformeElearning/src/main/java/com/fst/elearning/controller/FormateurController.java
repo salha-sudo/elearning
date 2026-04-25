@@ -6,11 +6,14 @@ import com.fst.elearning.entities.Lecon;
 import com.fst.elearning.service.CoursService;
 import com.fst.elearning.service.ModuleService;
 import com.fst.elearning.service.LeconService;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/formateur")
 public class FormateurController {
 
@@ -26,31 +29,33 @@ public class FormateurController {
         this.leconService = leconService;
     }
 
-    //  CRUD Cours (formateur)
-    @PostMapping("/cours")
-    public Cours createCours(@RequestBody Cours c) {
-        return coursService.save(c);
-    }
-
     @GetMapping("/cours")
-    public List<Cours> mesCours() {
-        return coursService.getCatalogue("", 0).getContent();
+    public String mesCours(Model model) {
+        model.addAttribute("cours", coursService.getCatalogue("", 0).getContent());
+        return "formateur/cours";  
     }
 
-    @DeleteMapping("/cours/{id}")
-    public void deleteCours(@PathVariable Long id) {
+    @PostMapping("/cours")
+    public String createCours(@ModelAttribute Cours c) {
+        coursService.save(c);
+        return "redirect:/formateur/cours";
+    }
+
+    @GetMapping("/cours/delete/{id}")  
+    public String deleteCours(@PathVariable Long id) {
         coursService.delete(id);
+        return "redirect:/formateur/cours";
     }
 
-    // Modules
     @PostMapping("/modules")
-    public Module createModule(@RequestBody Module m) {
-        return moduleService.save(m);
+    public String createModule(@ModelAttribute Module m) {
+        moduleService.save(m);
+        return "redirect:/formateur/cours";
     }
 
-    //  Leçons
     @PostMapping("/lecons")
-    public Lecon createLecon(@RequestBody Lecon l) {
-        return leconService.save(l);
+    public String createLecon(@ModelAttribute Lecon l) {
+        leconService.save(l);
+        return "redirect:/formateur/cours";
     }
 }

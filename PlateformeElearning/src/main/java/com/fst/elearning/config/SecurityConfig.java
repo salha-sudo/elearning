@@ -34,13 +34,18 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .successHandler((req, res, authentication) -> {
+                            String role = authentication.getAuthorities().toString();
+                            if (role.contains("ADMIN"))
+                                res.sendRedirect("/cours");
+                            else if (role.contains("FORMATEUR"))
+                                res.sendRedirect("/formateur/cours");
+                            else
+                                res.sendRedirect("/apprenant/cours");
+                        })
                         .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                );
+                    )
+                    .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
