@@ -24,4 +24,5 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL) // Un quiz contient plusieurs questions
     private List<Question> questions;
+    
 }

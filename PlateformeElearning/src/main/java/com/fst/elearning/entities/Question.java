@@ -25,6 +25,8 @@ public class Question {
     private String choix4;
 
     private int bonneReponse; 
+    public Long getId() { return id; }
+    public int getBonneReponse() { return bonneReponse; }
 
     @ManyToOne
     private Quiz quiz;

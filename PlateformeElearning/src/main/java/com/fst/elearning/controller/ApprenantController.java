@@ -1,13 +1,8 @@
 package com.fst.elearning.controller;
 
-import com.fst.elearning.entities.Cours;
-import com.fst.elearning.entities.Inscription;
-import com.fst.elearning.entities.StatutInscription;
-import com.fst.elearning.entities.Utilisateur;
-import com.fst.elearning.repository.CoursRepository;
-import com.fst.elearning.repository.UtilisateurRepository;
-import com.fst.elearning.service.CoursService;
-import com.fst.elearning.service.InscriptionService;
+import com.fst.elearning.entities.*;
+import com.fst.elearning.repository.*;
+import com.fst.elearning.service.*;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -35,32 +30,55 @@ public class ApprenantController {
         this.coursRepository = coursRepository;
     }
 
+    // =========================
+    // Catalogue des cours
+    // =========================
     @GetMapping("/cours")
     public String voirCours(Model model) {
-        model.addAttribute("cours", coursService.getCatalogue("", 0).getContent());
+        model.addAttribute("cours",
+                coursService.getCatalogue("", 0).getContent());
         return "apprenant/cours";
     }
 
+    // =========================
+    // Inscription à un cours
+    // =========================
     @PostMapping("/inscrire")
-    public String inscrire(@RequestParam Long coursId, Authentication auth) {
-        Utilisateur apprenant = utilisateurRepository
-            .findByUsername(auth.getName()).orElseThrow();
+    public String inscrire(@RequestParam Long coursId,
+                           Authentication auth) {
 
-        Cours cours = coursRepository.findById(coursId).orElseThrow();
+        Utilisateur apprenant = utilisateurRepository
+                .findByUsername(auth.getName())
+                .orElseThrow();
+
+        Cours cours = coursRepository.findById(coursId)
+                .orElseThrow();
 
         Inscription inscription = new Inscription();
         inscription.setApprenant(apprenant);
         inscription.setCours(cours);
         inscription.setDateInscription(LocalDate.now());
-        inscription.setStatut(StatutInscription.ACTIF);
+        inscription.setStatut(StatutInscription.EN_COURS);
 
         inscriptionService.save(inscription);
+
         return "redirect:/apprenant/inscriptions";
     }
 
+    // =========================
+    // Mes inscriptions
+    // =========================
     @GetMapping("/inscriptions")
-    public String mesInscriptions(Model model) {
-        model.addAttribute("inscriptions", inscriptionService.findAll());
+    public String mesInscriptions(Model model,
+                                  Authentication auth) {
+
+        Utilisateur user = utilisateurRepository
+                .findByUsername(auth.getName())
+                .orElseThrow();
+
+        model.addAttribute("inscriptions",
+                inscriptionService.findByUser(user.getId()));
+
         return "apprenant/inscriptions";
     }
 }

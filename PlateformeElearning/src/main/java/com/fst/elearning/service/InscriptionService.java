@@ -15,11 +15,11 @@ public class InscriptionService {
         this.repo = repo;
     }
 
-    public Inscription save(Inscription i) {  // Enregistrer une inscription (apprenant -> cours)
+    public Inscription save(Inscription i) {
         return repo.save(i);
     }
 
-    public List<Inscription> findAll() {      // Récupérer toutes les inscriptions
-        return repo.findAll();
+    public List<Inscription> findByUser(Long userId) {
+        return repo.findByApprenantId(userId);
     }
 }

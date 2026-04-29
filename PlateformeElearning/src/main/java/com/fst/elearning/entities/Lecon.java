@@ -1,11 +1,6 @@
 package com.fst.elearning.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -18,13 +13,13 @@ public class Lecon {
 
     private String titre;
 
-    @Column(columnDefinition = "TEXT")     // Contenu détaillé de la leçon
+    @Column(columnDefinition = "TEXT")
     private String contenu;
 
     private int ordre;
 
     private int dureeMin;
 
-    @ManyToOne // Plusieurs leçons appartiennent à un seul module
+    @ManyToOne
     private Module module;
 }

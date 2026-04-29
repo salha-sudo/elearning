@@ -1,24 +1,23 @@
-<!DOCTYPE html>
+</html> <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Formateur</title>
-</head>
-
-<body class="container mt-4">
-
-<h2>‍Dashboard Formateur </h2>
-
-<a th:href="@{/formateur/cours}" class="btn btn-success">Voir mes cours</a>
-
-<hr>
-
-<h4>Mes actions</h4>
-
-<ul>
-    <li>Créer cours</li>
-    <li>Créer modules</li>
-    <li>Créer leçons</li>
-</ul>
-
+<head><title>Catalogue Cours</title></head>
+<body>
+<h2>Catalogue des Cours</h2>
+<table border="1">
+  <tr>
+    <th>Titre</th><th>Catégorie</th><th>Niveau</th><th>Action</th>
+  </tr>
+  <tr th:each="c : ${cours}">
+    <td th:text="${c.titre}"></td>
+    <td th:text="${c.categorie}"></td>
+    <td th:text="${c.niveau}"></td>
+    <td>
+      <form th:action="@{/apprenant/inscrire}" method="post">
+        <input type="hidden" name="coursId" th:value="${[c.id](http://c.id)}"/>
+        <button type="submit">S'inscrire</button>
+      </form>
+    </td>
+  </tr>
+</table>
 </body>
 </html>

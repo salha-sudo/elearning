@@ -22,6 +22,7 @@ public class Cours {
     private LocalDateTime dateCreation = LocalDateTime.now();
     @OneToMany(mappedBy = "cours", cascade = CascadeType.ALL)
     private List<Module> modules;
+    
 
     // Getters
     public Long getId() { return id; }

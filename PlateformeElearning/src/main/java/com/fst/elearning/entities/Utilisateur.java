@@ -46,4 +46,11 @@ public class Utilisateur {
     public void setRole(String role) {
         this.role = role;
     }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

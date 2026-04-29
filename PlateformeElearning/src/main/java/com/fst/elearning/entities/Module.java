@@ -2,13 +2,7 @@ package com.fst.elearning.entities;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -25,10 +19,9 @@ public class Module {
 
     private int ordre;
 
-    @ManyToOne // Plusieurs modules appartiennent à un seul cours
+    @ManyToOne
     private Cours cours;
+
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
     private List<Lecon> lecons;
-
-   
 }
