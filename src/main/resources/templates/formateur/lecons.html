@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gestion Lecons</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">E-Learning FST</a>
+        <a href="/formateur/dashboard"
+           class="btn btn-outline-light">
+            Mes cours
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/formateur/dashboard">Mes cours</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/formateur/cours/{id}/modules(id=${module.cours.id})}"
+                   th:text="${module.cours.titre}"></a>
+            </li>
+            <li class="breadcrumb-item active"
+                th:text="${module.titre}"></li>
+        </ol>
+    </nav>
+
+    <div class="row">
+
+        <!-- Liste lecons -->
+        <div class="col-md-8">
+            <h4>
+                <i class="bi bi-list-ul"></i> Lecons du module
+            </h4>
+
+            <div th:if="${lecons.empty}"
+                 class="alert alert-info">
+                Aucune lecon. Ajoutez-en une !
+            </div>
+
+            <div class="list-group mb-4">
+                <div class="list-group-item"
+                     th:each="lecon : ${lecons}">
+                    <div class="d-flex justify-content-between
+                                align-items-center">
+                        <div>
+                            <span class="badge bg-secondary me-2"
+                                  th:text="${lecon.ordre}"></span>
+                            <strong th:text="${lecon.titre}">
+                            </strong>
+                            <span class="badge bg-light
+                                         text-dark ms-2">
+                                <i class="bi bi-clock"></i>
+                                <span th:text="${lecon.dureeMin}">
+                                </span> min
+                            </span>
+                        </div>
+                        <form th:action="@{/formateur/lecons/{id}/supprimer(id=${lecon.id})}"
+                              method="post"
+                              onsubmit="return confirm(
+                              'Supprimer cette lecon ?')">
+                            <button class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Apercu contenu -->
+                    <small class="text-muted mt-1 d-block"
+                           th:if="${lecon.contenu != null}"
+                           th:text="${#strings.abbreviate(
+                                     lecon.contenu, 80)}">
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire ajout lecon -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0">
+                        <i class="bi bi-plus"></i> Nouvelle lecon
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/formateur/modules/{id}/lecons/nouvelle(id=${module.id})}"
+                          method="post"
+                          th:object="${nouvelleLecon}">
+                        <div class="mb-2">
+                            <label class="form-label">Titre *</label>
+                            <input type="text"
+                                   th:field="*{titre}"
+                                   class="form-control"
+                                   placeholder="Titre de la lecon"
+                                   required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Contenu</label>
+                            <textarea th:field="*{contenu}"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Contenu de la lecon">
+                            </textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">
+                                Duree (minutes)
+                            </label>
+                            <input type="number"
+                                   th:field="*{dureeMin}"
+                                   class="form-control"
+                                   placeholder="Ex: 15"
+                                   min="1"/>
+                        </div>
+                        <button type="submit"
+                                class="btn btn-success w-100">
+                            <i class="bi bi-plus-circle"></i>
+                            Ajouter
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Catalogue — E-Learning FST</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-rose">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-mortarboard-fill"></i> E-Learning FST
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/catalogue">
+                        <i class="bi bi-grid"></i> Catalogue
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-navbar" href="/login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Connexion
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-navbar" href="/register">
+                        <i class="bi bi-person-plus"></i>
+                        S'inscrire
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- HEADER CATALOGUE -->
+<div style="background: linear-gradient(135deg, #fce4ec, #fdf6f9);
+            padding: 40px 0; margin-bottom: 30px;">
+    <div class="container text-center">
+        <h2 style="color:#c2185b; font-weight:700;">
+            <i class="bi bi-grid-fill"></i> Catalogue des cours
+        </h2>
+        <p class="text-muted">
+            Découvrez tous nos cours disponibles
+        </p>
+    </div>
+</div>
+
+<div class="container mb-5">
+
+    <!-- FILTRES -->
+    <div class="card mb-4"
+         style="border:none; border-radius:15px;
+                box-shadow: 0 4px 20px rgba(233,30,140,0.1);">
+        <div class="card-body p-4">
+            <h5 style="color:#e91e8c;" class="mb-3">
+                <i class="bi bi-funnel"></i> Filtrer les cours
+            </h5>
+            <form action="/catalogue" method="get"
+                  class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text"
+                              style="background:#fce4ec;
+                                     border-color:#f48fb1;">
+                            <i class="bi bi-search"
+                               style="color:#e91e8c;"></i>
+                        </span>
+                        <input type="text" name="titre"
+                               class="form-control"
+                               placeholder="Rechercher un cours..."
+                               th:value="${titre}"/>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="categorie" class="form-select">
+                        <option value="">Toutes catégories</option>
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat}"
+                                th:text="${cat}"
+                                th:selected="${cat == categorie}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="niveau" class="form-select">
+                        <option value="">Tous niveaux</option>
+                        <option th:each="niv : ${niveaux}"
+                                th:value="${niv}"
+                                th:text="${niv}"
+                                th:selected="${niv.name() == niveau}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-rose w-100">
+                        <i class="bi bi-search"></i> Filtrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- RÉSULTATS -->
+    <div th:if="${coursPage == null or coursPage.isEmpty()}"
+         class="text-center py-5">
+        <i class="bi bi-search"
+           style="font-size:4rem; color:#f48fb1;"></i>
+        <h4 class="mt-3 text-muted">Aucun cours trouvé</h4>
+        <p class="text-muted">
+            Essayez avec d'autres critères de recherche
+        </p>
+    </div>
+
+    <!-- NOMBRE RÉSULTATS -->
+    <div th:if="${coursPage != null and !coursPage.isEmpty()}"
+         class="mb-3">
+        <small class="text-muted">
+            <i class="bi bi-info-circle"></i>
+            <span th:text="${coursPage.totalElements}"></span>
+            cours trouvé(s)
+        </small>
+    </div>
+
+    <!-- GRILLE COURS -->
+    <div class="row row-cols-1 row-cols-md-3 g-4"
+         th:if="${coursPage != null}">
+        <div class="col"
+             th:each="cours : ${coursPage.content}">
+            <div class="card card-cours h-100">
+
+                <!-- IMAGE -->
+                <div style="position:relative;">
+                    <img th:src="${cours.imageUrl != null ?
+                                  cours.imageUrl :
+                                  '/images/default-cours.jpg'}"
+                         class="card-img-top"
+                         style="height:200px; object-fit:cover;"
+                         alt=""/>
+                    <!-- Badge niveau sur l'image -->
+                    <div style="position:absolute;
+                                top:10px; left:10px;">
+                        <span th:class="'badge badge-'
+                              + ${cours.niveau}"
+                              th:text="${cours.niveau}"></span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title fw-bold"
+                        th:text="${cours.titre}"></h5>
+                    <p class="card-text text-muted small"
+                       th:text="${#strings.abbreviate(
+                                 cours.description, 100)}"></p>
+                    <div class="d-flex align-items-center
+                                gap-2 mt-3">
+                        <i class="bi bi-person-circle"
+                           style="color:#e91e8c;"></i>
+                        <small class="text-muted"
+                               th:text="${cours.formateur.prenom
+                               + ' ' + cours.formateur.nom}">
+                        </small>
+                    </div>
+                    <div class="d-flex align-items-center
+                                gap-2 mt-1">
+                        <i class="bi bi-folder"
+                           style="color:#e91e8c;"></i>
+                        <small class="text-muted"
+                               th:text="${cours.categorie}">
+                        </small>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <a th:href="@{/cours/detail/{id}(id=${cours.id})}"
+                       class="btn btn-rose w-100">
+                        <i class="bi bi-eye"></i> Voir le cours
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <nav class="mt-5"
+         th:if="${coursPage != null
+         and coursPage.totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item"
+                th:classappend="${coursPage.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/catalogue(
+                   page=${coursPage.number - 1},
+                   titre=${titre},
+                   categorie=${categorie},
+                   niveau=${niveau})}">
+                    <i class="bi bi-chevron-left"></i> Précédent
+                </a>
+            </li>
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(
+                         0, coursPage.totalPages - 1)}"
+                th:classappend="${i == coursPage.number}
+                                 ? 'active'">
+                <a class="page-link"
+                   th:href="@{/catalogue(
+                   page=${i},
+                   titre=${titre},
+                   categorie=${categorie},
+                   niveau=${niveau})}"
+                   th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item"
+                th:classappend="${coursPage.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/catalogue(
+                   page=${coursPage.number + 1},
+                   titre=${titre},
+                   categorie=${categorie},
+                   niveau=${niveau})}">
+                    Suivant <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer-rose">
+    <div class="container">
+        <p class="mb-1">
+            <i class="bi bi-mortarboard-fill"></i>
+            E-Learning FST — Master STR
+        </p>
+        <small>© 2025 Université de Tunis El Manar</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+/* ===== THEME ROSE CLASSIQUE E-LEARNING FST ===== */
+
+:root {
+    --rose-primary: #e91e8c;
+    --rose-light: #fce4ec;
+    --rose-medium: #f48fb1;
+    --rose-dark: #c2185b;
+    --rose-gradient: linear-gradient(135deg, #e91e8c, #c2185b);
+    --text-dark: #2d2d2d;
+    --text-muted: #757575;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(233, 30, 140, 0.15);
+    --shadow-hover: 0 8px 30px rgba(233, 30, 140, 0.25);
+}
+
+/* ===== BODY ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fdf6f9;
+    color: var(--text-dark);
+}
+
+/* ===== NAVBAR ===== */
+.navbar-rose {
+    background: var(--rose-gradient) !important;
+    box-shadow: 0 2px 15px rgba(233, 30, 140, 0.3);
+    padding: 15px 0;
+}
+
+.navbar-rose .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white !important;
+    letter-spacing: 1px;
+}
+
+.navbar-rose .nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar-rose .nav-link:hover {
+    color: white !important;
+}
+
+.btn-navbar {
+    background: white;
+    color: var(--rose-primary) !important;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-navbar:hover {
+    background: var(--rose-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+    background: var(--rose-gradient);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle,
+        rgba(255,255,255,0.1) 0%,
+        transparent 60%);
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+/* ===== BOUTONS ===== */
+.btn-rose {
+    background: var(--rose-gradient);
+    color: white !important;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+}
+
+.btn-rose:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    color: white !important;
+}
+
+.btn-rose-outline {
+    background: transparent;
+    color: var(--rose-primary) !important;
+    border: 2px solid var(--rose-primary);
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-rose-outline:hover {
+    background: var(--rose-primary);
+    color: white !important;
+    transform: translateY(-3px);
+}
+
+/* ===== CARDS COURS ===== */
+.card-cours {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+}
+
+.card-cours:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-cours .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-cours .card-body {
+    padding: 20px;
+}
+
+.card-cours .card-footer {
+    background: transparent;
+    border-top: 1px solid var(--rose-light);
+    padding: 15px 20px;
+}
+
+/* ===== BADGES NIVEAU ===== */
+.badge-DEBUTANT {
+    background: #4caf50 !important;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-INTERMEDIAIRE {
+    background: #ff9800 !important;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-AVANCE {
+    background: #f44336 !important;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ===== FORMULAIRES ===== */
+.form-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.form-card .card-header {
+    background: var(--rose-gradient);
+    color: white;
+    padding: 25px;
+    text-align: center;
+    border: none;
+}
+
+.form-control:focus {
+    border-color: var(--rose-medium);
+    box-shadow: 0 0 0 0.2rem rgba(233, 30, 140, 0.15);
+}
+
+.form-select:focus {
+    border-color: var(--rose-medium);
+    box-shadow: 0 0 0 0.2rem rgba(233, 30, 140, 0.15);
+}
+
+/* ===== SIDEBAR FORMATEUR ===== */
+.sidebar-rose {
+    background: var(--rose-gradient);
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+}
+
+.sidebar-rose a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    margin-bottom: 5px;
+}
+
+.sidebar-rose a:hover {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+/* ===== SECTION TITRE ===== */
+.section-title {
+    position: relative;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--rose-gradient);
+    border-radius: 3px;
+}
+
+/* ===== STATS CARDS ===== */
+.stat-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--rose-primary);
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.stat-card .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--rose-primary);
+}
+
+/* ===== FOOTER ===== */
+.footer-rose {
+    background: var(--rose-gradient);
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+    margin-top: 60px;
+}
+
+/* ===== ACCORDION ===== */
+.accordion-button:not(.collapsed) {
+    background-color: var(--rose-light);
+    color: var(--rose-dark);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(233, 30, 140, 0.15);
+}
+
+/* ===== PAGINATION ===== */
+.page-link {
+    color: var(--rose-primary);
+    border-color: var(--rose-medium);
+}
+
+.page-link:hover {
+    background-color: var(--rose-light);
+    color: var(--rose-dark);
+}
+
+.page-item.active .page-link {
+    background-color: var(--rose-primary);
+    border-color: var(--rose-primary);
+}
+
+/* ===== BREADCRUMB ===== */
+.breadcrumb-item a {
+    color: var(--rose-primary);
+    text-decoration: none;
+}
+
+/* ===== LIST GROUP ===== */
+.list-group-item:hover {
+    background-color: var(--rose-light);
+}
+
+/* ===== ALERT ===== */
+.alert-rose {
+    background-color: var(--rose-light);
+    border-color: var(--rose-medium);
+    color: var(--rose-dark);
+}

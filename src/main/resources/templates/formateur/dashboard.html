@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Espace Formateur</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-rose">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-mortarboard-fill"></i> E-Learning FST
+        </a>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-white">
+                <i class="bi bi-person-circle"></i>
+                <span th:text="${formateur != null ?
+                      formateur.prenom + ' ' + formateur.nom :
+                      ''}"></span>
+            </span>
+            <a href="/catalogue" class="btn btn-navbar">
+                <i class="bi bi-grid"></i> Catalogue
+            </a>
+            <form action="/logout" method="post" class="d-inline">
+                <button class="btn btn-navbar" type="submit">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Déconnexion
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-title mb-0">
+                <i class="bi bi-person-video3"></i> Mes cours
+            </h2>
+            <p class="text-muted mt-3"
+               th:text="${formateur != null ?
+               'Bienvenue, ' + formateur.prenom + ' !' : ''}">
+            </p>
+        </div>
+        <a href="/formateur/cours/nouveau"
+           class="btn btn-rose btn-lg">
+            <i class="bi bi-plus-circle"></i> Nouveau cours
+        </a>
+    </div>
+
+    <!-- Message vide -->
+    <div th:if="${mesCoursPage == null or mesCoursPage.isEmpty()}"
+         class="text-center py-5">
+        <i class="bi bi-book"
+           style="font-size:4rem; color:#f48fb1;"></i>
+        <h4 class="mt-3 text-muted">
+            Vous n'avez pas encore de cours
+        </h4>
+        <p class="text-muted">
+            Commencez par créer votre premier cours !
+        </p>
+        <a href="/formateur/cours/nouveau"
+           class="btn btn-rose mt-2">
+            <i class="bi bi-plus-circle"></i> Créer un cours
+        </a>
+    </div>
+
+    <!-- Liste cours -->
+    <div class="row row-cols-1 row-cols-md-2 g-4"
+         th:if="${mesCoursPage != null
+         and !mesCoursPage.isEmpty()}">
+        <div class="col"
+             th:each="cours : ${mesCoursPage.content}">
+            <div class="card card-cours h-100">
+                <div class="row g-0">
+                    <div class="col-4">
+                        <img th:src="${cours.imageUrl != null ?
+                                      cours.imageUrl :
+                                      '/images/default-cours.jpg'}"
+                             class="img-fluid rounded-start h-100"
+                             style="object-fit:cover;" alt=""/>
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body">
+                            <span th:class="'badge badge-'
+                                  + ${cours.niveau}"
+                                  th:text="${cours.niveau}"></span>
+                            <span th:if="${!cours.actif}"
+                                  class="badge bg-secondary ms-1">
+                                Inactif
+                            </span>
+                            <h5 class="card-title mt-2"
+                                th:text="${cours.titre}"></h5>
+                            <p class="text-muted small"
+                               th:text="${#strings.abbreviate(
+                               cours.description, 60)}"></p>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <a th:href="@{/formateur/cours/{id}/modifier(id=${cours.id})}"
+                                   class="btn btn-sm btn-rose-outline">
+                                    <i class="bi bi-pencil"></i>
+                                    Modifier
+                                </a>
+                                <a th:href="@{/formateur/cours/{id}/modules(id=${cours.id})}"
+                                   class="btn btn-sm btn-rose">
+                                    <i class="bi bi-collection"></i>
+                                    Modules
+                                </a>
+                                <form th:action="@{/formateur/cours/{id}/supprimer(id=${cours.id})}"
+                                      method="post"
+                                      onsubmit="return confirm(
+                                      'Supprimer ce cours ?')">
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-4"
+         th:if="${mesCoursPage != null
+         and mesCoursPage.totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item"
+                th:classappend="${mesCoursPage.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/formateur/dashboard(page=${mesCoursPage.number - 1})}">
+                    Précédent
+                </a>
+            </li>
+            <li class="page-item"
+                th:classappend="${mesCoursPage.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/formateur/dashboard(page=${mesCoursPage.number + 1})}">
+                    Suivant
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer-rose mt-5">
+    <div class="container">
+        <p class="mb-1">
+            <i class="bi bi-mortarboard-fill"></i>
+            E-Learning FST — Master STR
+        </p>
+        <small>© 2025 Université de Tunis El Manar</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

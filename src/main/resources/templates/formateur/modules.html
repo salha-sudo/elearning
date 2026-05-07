@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Gestion Modules</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">E-Learning FST</a>
+        <a href="/formateur/dashboard"
+           class="btn btn-outline-light">
+            Mes cours
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/formateur/dashboard">Mes cours</a>
+            </li>
+            <li class="breadcrumb-item active"
+                th:text="${cours.titre}"></li>
+        </ol>
+    </nav>
+
+    <div class="row">
+
+        <!-- Liste modules -->
+        <div class="col-md-8">
+            <h4>
+                <i class="bi bi-collection"></i> Modules du cours
+            </h4>
+
+            <div th:if="${modules.empty}"
+                 class="alert alert-info">
+                Aucun module. Ajoutez-en un !
+            </div>
+
+            <div class="list-group mb-4">
+                <div class="list-group-item"
+                     th:each="module : ${modules}">
+                    <div class="d-flex justify-content-between
+                                align-items-center">
+                        <div>
+                            <span class="badge bg-secondary me-2"
+                                  th:text="${module.ordre}"></span>
+                            <strong th:text="${module.titre}">
+                            </strong>
+                            <small class="text-muted ms-2"
+                                   th:text="${module.description}">
+                            </small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a th:href="@{/formateur/modules/{id}/lecons(id=${module.id})}"
+                               class="btn btn-sm btn-info text-white">
+                                <i class="bi bi-list-ul"></i> Lecons
+                            </a>
+                            <form th:action="@{/formateur/modules/{id}/supprimer(id=${module.id})}"
+                                  method="post"
+                                  onsubmit="return confirm(
+                                  'Supprimer ce module ?')">
+                                <button class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire ajout module -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0">
+                        <i class="bi bi-plus"></i> Nouveau module
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/formateur/cours/{id}/modules/nouveau(id=${cours.id})}"
+                          method="post"
+                          th:object="${nouveauModule}">
+                        <div class="mb-2">
+                            <label class="form-label">Titre *</label>
+                            <input type="text"
+                                   th:field="*{titre}"
+                                   class="form-control"
+                                   placeholder="Titre du module"
+                                   required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">
+                                Description
+                            </label>
+                            <textarea th:field="*{description}"
+                                      class="form-control"
+                                      rows="2"
+                                      placeholder="Description">
+                            </textarea>
+                        </div>
+                        <button type="submit"
+                                class="btn btn-success w-100">
+                            <i class="bi bi-plus-circle"></i>
+                            Ajouter
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

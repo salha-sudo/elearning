@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Détail Cours — E-Learning FST</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-rose">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-mortarboard-fill"></i> E-Learning FST
+        </a>
+        <div class="d-flex gap-2">
+            <a href="/catalogue" class="btn btn-navbar">
+                <i class="bi bi-grid"></i> Catalogue
+            </a>
+            <a href="/login" class="btn btn-navbar">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Connexion
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4 mb-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/catalogue">Catalogue</a>
+            </li>
+            <li class="breadcrumb-item active"
+                th:text="${cours.titre}"></li>
+        </ol>
+    </nav>
+
+    <div class="row">
+
+        <!-- CONTENU PRINCIPAL -->
+        <div class="col-md-8">
+
+            <!-- Image -->
+            <img th:src="${cours.imageUrl != null ?
+                          cours.imageUrl :
+                          '/images/default-cours.jpg'}"
+                 class="img-fluid rounded mb-4"
+                 style="width:100%; max-height:350px;
+                        object-fit:cover;
+                        box-shadow: 0 4px 20px rgba(233,30,140,0.2);"
+                 alt=""/>
+
+            <!-- Badges -->
+            <div class="mb-3">
+                <span th:class="'badge badge-' + ${cours.niveau} + ' me-2'"
+                      th:text="${cours.niveau}"></span>
+                <span class="badge"
+                      style="background:#fce4ec; color:#c2185b;">
+                    <i class="bi bi-folder"></i>
+                    <span th:text="${cours.categorie}"></span>
+                </span>
+            </div>
+
+            <!-- Titre -->
+            <h2 class="fw-bold" th:text="${cours.titre}"></h2>
+
+            <!-- Formateur -->
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div>
+                    <i class="bi bi-person-circle"
+                       style="color:#e91e8c; font-size:1.5rem;"></i>
+                    <strong th:text="${cours.formateur.prenom
+                            + ' ' + cours.formateur.nom}"></strong>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="card mb-4"
+                 style="border:none; background:#fdf6f9;
+                        border-radius:15px; padding:20px;">
+                <h5 style="color:#c2185b;">
+                    <i class="bi bi-info-circle"></i> Description
+                </h5>
+                <p th:text="${cours.description}"
+                   class="text-muted mb-0"></p>
+            </div>
+
+            <!-- MODULES -->
+            <h4 class="section-title">
+                <i class="bi bi-collection"></i>
+                Contenu du cours
+            </h4>
+
+            <div th:if="${cours.modules.empty}"
+                 class="alert alert-rose mt-3">
+                Aucun module disponible pour ce cours.
+            </div>
+
+            <div class="accordion mt-3" id="accordionModules">
+                <div class="accordion-item"
+                     style="border:none; margin-bottom:10px;
+                            border-radius:10px; overflow:hidden;
+                            box-shadow:0 2px 10px rgba(0,0,0,0.05);"
+                     th:each="module, mStat : ${cours.modules}">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                th:data-bs-target="'#module' + ${mStat.index}"
+                                style="font-weight:600;">
+                            <i class="bi bi-collection me-2"
+                               style="color:#e91e8c;"></i>
+                            <span th:text="${module.ordre}
+                                  + '. ' + ${module.titre}"></span>
+                            <span class="badge ms-2"
+                                  style="background:#fce4ec; color:#c2185b;">
+                                <span th:text="${module.lecons.size()}"></span>
+                                leçons
+                            </span>
+                        </button>
+                    </h2>
+                    <div th:id="'module' + ${mStat.index}"
+                         class="accordion-collapse collapse">
+                        <div class="accordion-body"
+                             style="background:#fdf6f9;">
+                            <div th:if="${module.lecons.empty}"
+                                 class="text-muted small">
+                                Aucune leçon.
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"
+                                    style="background:transparent;
+                                           border-color:#fce4ec;"
+                                    th:each="lecon : ${module.lecons}">
+                                    <i class="bi bi-play-circle-fill me-2"
+                                       style="color:#e91e8c;"></i>
+                                    <span th:text="${lecon.titre}"></span>
+                                    <span class="float-end text-muted small">
+                                        <i class="bi bi-clock"></i>
+                                        <span th:text="${lecon.dureeMin}"></span> min
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-md-4">
+            <div class="card sticky-top"
+                 style="top:80px; border:none;
+                        border-radius:20px;
+                        box-shadow:0 4px 20px rgba(233,30,140,0.15);
+                        overflow:hidden;">
+
+                <div style="background:linear-gradient(135deg, #e91e8c, #c2185b);
+                            padding:25px; text-align:center; color:white;">
+                    <i class="bi bi-book-fill" style="font-size:3rem;"></i>
+                    <h5 class="mt-2 mb-0">Rejoindre ce cours</h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2">
+                            <i class="bi bi-collection me-2"
+                               style="color:#e91e8c;"></i>
+                            <strong th:text="${cours.modules.size()}"></strong>
+                            modules
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-bar-chart me-2"
+                               style="color:#e91e8c;"></i>
+                            Niveau :
+                            <strong th:text="${cours.niveau}"></strong>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-folder me-2"
+                               style="color:#e91e8c;"></i>
+                            <span th:text="${cours.categorie}"></span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-person me-2"
+                               style="color:#e91e8c;"></i>
+                            <span th:text="${cours.formateur.prenom
+                                  + ' ' + cours.formateur.nom}"></span>
+                        </li>
+                    </ul>
+
+                    <!-- CAS 1 : Déjà inscrit → Accéder au cours -->
+                    <div th:if="${dejaInscrit}">
+                        <a th:href="@{/apprenant/cours/{id}(id=${cours.id})}"
+                           class="btn btn-rose w-100 btn-lg mb-2">
+                            <i class="bi bi-play-circle"></i>
+                            Accéder au cours
+                        </a>
+                    </div>
+
+                    <!-- CAS 2 : Connecté APPRENANT, pas encore inscrit -->
+                    <div th:if="${estApprenant and !dejaInscrit}">
+                        <form th:action="@{/apprenant/inscrire/{id}(id=${cours.id})}"
+                              method="post">
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}"
+                                   th:if="${_csrf != null}"/>
+                            <button type="submit"
+                                    class="btn btn-rose w-100 btn-lg mb-2">
+                                <i class="bi bi-person-plus"></i>
+                                S'inscrire gratuitement
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- CAS 3 : Non connecté -->
+                    <div th:if="${!estApprenant and !dejaInscrit}">
+                        <a href="/register"
+                           class="btn btn-rose w-100 btn-lg mb-2">
+                            <i class="bi bi-person-plus"></i>
+                            S'inscrire gratuitement
+                        </a>
+                        <a href="/login"
+                           class="btn btn-rose-outline w-100">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            Se connecter
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer-rose">
+    <div class="container">
+        <p class="mb-1">
+            <i class="bi bi-mortarboard-fill"></i>
+            E-Learning FST — Master STR
+        </p>
+        <small>© 2025 Université de Tunis El Manar</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

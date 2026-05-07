@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mon cours</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-rose">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-mortarboard-fill"></i>
+            E-Learning FST
+        </a>
+        <a href="/apprenant/dashboard"
+           class="btn btn-navbar">
+            <i class="bi bi-arrow-left"></i> Mes cours
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-4 mb-5">
+
+    <!-- Titre et progression -->
+    <div class="card mb-4"
+         style="border:none; border-radius:20px;
+                background: linear-gradient(
+                135deg, #fce4ec, #fdf6f9);
+                padding:25px;">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h3 class="fw-bold"
+                    th:text="${cours.titre}"></h3>
+                <p class="text-muted mb-2"
+                   th:text="${cours.description}"></p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div style="font-size:2.5rem;
+                            font-weight:700;
+                            color:#e91e8c;">
+                    <span th:text="${progression}"></span>%
+                </div>
+                <div class="progress mt-2"
+                     style="height:10px; border-radius:10px;">
+                    <div class="progress-bar"
+                         style="background:linear-gradient(
+                                135deg, #e91e8c, #c2185b);
+                                border-radius:10px;"
+                         th:style="'width:' + ${progression} + '%'">
+                    </div>
+                </div>
+                <small class="text-muted">Progression</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modules et leçons -->
+    <div class="accordion" id="accordionModules">
+        <div class="accordion-item"
+             style="border:none; margin-bottom:15px;
+                    border-radius:15px; overflow:hidden;
+                    box-shadow:0 2px 15px rgba(0,0,0,0.08);"
+             th:each="module, mStat : ${cours.modules}">
+
+            <h2 class="accordion-header">
+                <button class="accordion-button"
+                        th:classappend="${mStat.index > 0} ?
+                        ' collapsed'"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        th:data-bs-target="'#module'
+                        + ${mStat.index}"
+                        style="font-weight:600;">
+                    <i class="bi bi-collection me-2"
+                       style="color:#e91e8c;"></i>
+                    <span th:text="${module.ordre}
+                          + '. ' + ${module.titre}"></span>
+                </button>
+            </h2>
+
+            <div th:id="'module' + ${mStat.index}"
+                 th:class="'accordion-collapse collapse'
+                 + (${mStat.index == 0} ? ' show' : '')"
+                 data-bs-parent="#accordionModules">
+                <div class="accordion-body"
+                     style="background:#fdf6f9;">
+
+                    <!-- Leçons -->
+                    <div class="list-group list-group-flush mb-3">
+                        <div class="list-group-item"
+                             style="background:transparent;
+                                    border-color:#fce4ec;"
+                             th:each="lecon : ${module.lecons}">
+                            <div class="d-flex
+                                        justify-content-between
+                                        align-items-center">
+                                <div>
+                                    <i class="bi bi-play-circle-fill me-2"
+                                       style="color:#e91e8c;"></i>
+                                    <span th:text="${lecon.titre}">
+                                    </span>
+                                    <span class="badge bg-light
+                                          text-dark ms-2">
+                                        <span th:text="${lecon.dureeMin}">
+                                        </span> min
+                                    </span>
+                                </div>
+                                <form th:action="@{/apprenant/lecon/{id}/completer(id=${lecon.id})}"
+                                      method="post">
+                                    <input type="hidden"
+                                           name="coursId"
+                                           th:value="${cours.id}"/>
+                                    <button type="submit"
+                                            class="btn btn-sm btn-rose">
+                                        <i class="bi bi-check-circle"></i>
+                                        Completer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bouton Quiz -->
+                    <div th:if="${module.quiz != null}"
+                         class="text-center mt-2">
+                        <a th:href="@{/apprenant/quiz/{id}(id=${module.quiz.id})}"
+                           class="btn btn-rose">
+                            <i class="bi bi-patch-question"></i>
+                            Passer le Quiz
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-rose">
+    <div class="container">
+        <small>© 2025 E-Learning FST — Master STR</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
